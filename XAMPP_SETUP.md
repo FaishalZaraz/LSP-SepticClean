@@ -18,7 +18,7 @@
 ### 4. Configure API URL
 In `src/lib/api.js`, update the API_BASE_URL if needed:
 ```javascript
-const API_BASE_URL = 'http://localhost/septic-service/backend/api';
+const API_BASE_URL = 'http://localhost/septicclean/backend/api';
 ```
 
 ### 5. Test the Setup
