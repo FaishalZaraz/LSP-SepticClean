@@ -55,7 +55,12 @@ const Home: React.FC = () => {
                   className="border-2 border-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-900 transition-colors text-center flex items-center justify-center space-x-2"
                 >
                   <Phone className="h-5 w-5" />
-                  <span>Hubungi Darurat</span>
+                  <a 
+                    href="https://wa.me/081234567890" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-white-500"
+                  >Hubungi Darurat</a>
                 </a>
               </div>
             </div>
@@ -84,7 +89,7 @@ const Home: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
-              Mengapa Memilih SeptikClean?
+              Mengapa Memilih SepticClean?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Kami berkomitmen memberikan layanan terbaik dengan standar profesional tinggi
@@ -135,7 +140,7 @@ const Home: React.FC = () => {
               Pesan Online
             </Link>
             <a
-              href="tel:081234567890"
+              href="https://wa.me/081234567890"
               className="border-2 border-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors flex items-center justify-center space-x-2"
             >
               <Phone className="h-5 w-5" />

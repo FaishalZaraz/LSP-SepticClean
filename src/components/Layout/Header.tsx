@@ -18,7 +18,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2 text-xl font-bold">
             <Droplets className="h-8 w-8" />
-            <span>SeptikClean</span>
+            <span>SepticClean</span>
           </Link>
 
           <nav className="hidden md:flex items-center space-x-6">

@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 text-xl font-bold mb-4">
               <Droplets className="h-8 w-8 text-blue-400" />
-              <span>SeptikClean</span>
+              <span>SepticClean</span>
             </div>
             <p className="text-gray-300 mb-4">
               Layanan profesional sedot WC dan pembersihan saluran air dengan teknologi modern 
@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <span>info@septikclean.com</span>
+                <span>info@septicclean.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="h-4 w-4" />
@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 SeptikClean Pro. Semua hak dilindungi.</p>
+          <p>&copy; {new Date().getFullYear()} SepticClean. Semua hak dilindungi.</p>
         </div>
       </div>
     </footer>

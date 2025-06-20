@@ -16,13 +16,26 @@ const apiRequest = async (endpoint, options = {}) => {
     console.log(`Making API request to: ${url}`);
     const response = await fetch(url, config);
     
+    let data;
+    try {
+      data = await response.clone().json();
+    } catch (e) {
+      data = null;
+    }
+
     if (!response.ok) {
+      // Custom error message for HTTP 409
+      if (response.status === 409) {
+        throw new Error('Akun Sudah Terdaftar. Silakan Masuk atau Gunakan Email Lain.');
+      }
+      // If backend provides a message, use it
+      if (data && data.message) {
+        throw new Error(data.message);
+      }
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
     
-    const data = await response.json();
     console.log(`API response from ${endpoint}:`, data);
-    
     return data;
   } catch (error) {
     if (error instanceof TypeError) {
@@ -38,9 +51,26 @@ const apiRequest = async (endpoint, options = {}) => {
 // Authentication API
 export const authAPI = {
   login: async (email, password) => {
+    // Pastikan email dan password di-trim agar tidak ada spasi
     return apiRequest('/auth.php', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email: email.trim(), password: password.trim() }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  },
+  
+  register: async (email, password, name, role = 'customer') => {
+    // Pastikan email dan password di-trim agar tidak ada spasi
+    return apiRequest('/auth.php', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: email.trim(),
+        password: password.trim(),
+        name: name ? name.trim() : '',
+        role,
+        register: true
+      }),
+      headers: { 'Content-Type': 'application/json' }
     });
   },
 };

@@ -6,6 +6,7 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  register: (email: string, password: string, name: string, role?: string) => Promise<boolean>;
   isLoading: boolean;
   error: string | null;
 }
@@ -54,11 +55,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setError(null);
-    
     try {
-      console.log('Attempting login with database...');
-      const response = await authAPI.login(email, password);
-      
+      const response = await authAPI.login(email.trim(), password);
       if (response.success && response.user && response.token) {
         const userData: User = {
           id: response.user.id.toString(),
@@ -66,36 +64,54 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           name: response.user.name,
           role: response.user.role
         };
-        
         setUser(userData);
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(userData));
-        
-        console.log('Login successful from database:', userData.email);
         return true;
       } else {
         setError(response.message || 'Login gagal');
         return false;
       }
     } catch (error) {
-      console.error('Database login error:', error);
       setError('Gagal terhubung ke database. Pastikan XAMPP MySQL berjalan dan backend tersedia.');
-      
-      // Only use hardcoded admin as absolute fallback when database is completely unavailable
-      if (email === 'admin@septictank.com' && password === 'admin123') {
-        console.log('Using fallback admin login');
-        const adminUser: User = {
-          id: '1',
-          email: 'admin@septictank.com',
-          name: 'Admin (Fallback)',
-          role: 'admin'
-        };
-        setUser(adminUser);
-        localStorage.setItem('user', JSON.stringify(adminUser));
-        setError('Login berhasil (mode fallback). Untuk fitur lengkap, pastikan database tersedia.');
-        return true;
+      return false;
+    }
+  };
+
+  const register = async (email: string, password: string, name: string, role: string = 'customer'): Promise<boolean> => {
+    setError(null);
+    try {
+      let regName = name;
+      let regRole = role;
+      if (email.trim().toLowerCase() === 'admin@septictank.com') {
+        regName = 'Admin';
+        regRole = 'admin';
       }
-      
+      const response = await authAPI.register(email, password, regName, regRole);
+      if (response.success && response.user && response.token) {
+        const userData: User = {
+          id: response.user.id.toString(),
+          email: response.user.email,
+          name: response.user.name,
+          role: response.user.role
+        };
+        setUser(userData);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(userData));
+        return true;
+      } else {
+        setError(response.message || 'Registrasi gagal');
+        return false;
+      }
+    } catch (error: any) {
+      // Cek jika error dari response API (misal: email sudah ada, password salah, dll)
+      if (error && error.message && typeof error.message === 'string') {
+        setError(error.message);
+      } else if (error && error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Terjadi kesalahan. Silakan coba lagi.');
+      }
       return false;
     }
   };
@@ -109,7 +125,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading, error }}>
+    <AuthContext.Provider value={{ user, login, logout, register, isLoading, error }}>
       {children}
     </AuthContext.Provider>
   );

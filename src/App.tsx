@@ -12,6 +12,7 @@ import Home from './pages/Home';
 import Services from './pages/Services';
 import Order from './pages/Order';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/admin/Dashboard';
 import AdminServices from './pages/admin/Services';
 import AdminOrders from './pages/admin/Orders';
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             {/* Public Routes */}
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             
             {/* Routes with Header/Footer */}
             <Route path="/*" element={
