@@ -111,6 +111,11 @@ const Login: React.FC = () => {
               Belum punya akun? Register
             </Link>
           </div>
+          <div className="text-center mt-6">
+            <Link to="/" className="text-blue-600 hover:text-blue-800 text-sm">
+              Kembali ke Beranda
+            </Link>
+          </div>
         </div>
       </div>
     </div>
